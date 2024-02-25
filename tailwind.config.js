@@ -2,7 +2,16 @@
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        palanquin: ["Palanquin", "sans-serif"],
+        montserrat: ["Montserrat", "sans-serif"],
+      },
+      colors: {
+        primary: "#38bdf8",
+        "body-bg": "#0F172A",
+      },
+    },
   },
   plugins: [],
 };

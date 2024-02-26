@@ -1,17 +1,21 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import vanImgPlaceholder from "../../../assets/van-img-placeholder.png";
+import { addPost } from "../postsSLice";
+import { useDispatch } from "react-redux";
 
 const AddPostForm = () => {
+  const dispatch = useDispatch();
+  const formRef = useRef(null);
   const [newPost, setNewPost] = useState({
     imageUrl: null,
     name: "",
     description: "",
   });
-  const [imgTypeError, setImgTypeError] = useState(null);
+  const [errors, setErrors] = useState({});
 
   const onPostImgSelected = (e) => {
     const file = e.target.files[0];
-    setImgTypeError(null);
+    setErrors((prev) => ({ ...prev, imgType: null }));
 
     const reader = new FileReader();
 
@@ -20,7 +24,7 @@ const AddPostForm = () => {
     });
 
     reader.addEventListener("error", (e) => {
-      setImgTypeError(true);
+      setErrors((prev) => ({ ...prev, imgType: true }));
       console.error("Error occurred while reading the file:", e.target.error);
     });
 
@@ -33,16 +37,34 @@ const AddPostForm = () => {
     const type = e.target.type;
 
     if (type !== "file") {
-      setNewPost((prev) => ({ ...prev, [name]: value }));
+      setNewPost((prev) => ({ ...prev, [name]: value.trim() }));
     } else {
       onPostImgSelected(e);
     }
   };
 
-  console.log(newPost);
+  const handleSubmitPost = (e) => {
+    e.preventDefault();
 
-  const handleAddPost = () => {
+    const errors = {};
 
+    if (!newPost.name.trim()) {
+      errors.name = "Name is required";
+    }
+
+    if (!newPost.description.trim()) {
+      errors.description = "Description is required";
+    }
+
+    if (!newPost.imageUrl) {
+      errors.img = "Img is required";
+    }
+
+    setErrors(errors);
+
+    if (Object.keys(errors).length === 0) {
+      dispatch(addPost(newPost));
+    }
   };
 
   return (
@@ -50,8 +72,13 @@ const AddPostForm = () => {
       <h2 className="font-bold text-2xl text-center capitalize font-palanquin mb-5">
         Add New post
       </h2>
-      <form className="flex flex-col gap-4">
-        <label className="block w-[250px] m-auto border-2 border-dashed border-[#D1D5DB] p-5 rounded-md cursor-pointer text-center mb-5">
+      <form
+        className="flex flex-col gap-4"
+        onSubmit={handleSubmitPost}
+        ref={formRef}
+        method="post"
+      >
+        <label className="block w-[250px] m-auto border-2 border-dashed border-[#D1D5DB] p-5 rounded-md cursor-pointer text-center">
           <div
             className="w-[70px] aspect-square max-w-full border border-[#486898] bg-[#F0F5FB] overflow-hidden rounded-full p-[15px] m-auto mb-5"
             style={{ padding: newPost.imageUrl && "0px" }}
@@ -67,8 +94,8 @@ const AddPostForm = () => {
           <span className="text-sm text-[#95928f]">
             JPG, PNG, SVG (2MB max)
           </span>
-          {imgTypeError && (
-            <span className="img-type-error">
+          {errors.imgType && (
+            <span className="block text-sm text-red-400">
               Sorry, we couldn't process your file. It appears that the file you
               uploaded is not an image or its format is not supported.
             </span>
@@ -82,6 +109,9 @@ const AddPostForm = () => {
             onChange={handleFormChanges}
           />
         </label>
+        {errors.img && (
+          <span className="block text-sm text-red-400 mb-5">{errors.img}</span>
+        )}
 
         <input
           type="text"
@@ -91,6 +121,9 @@ const AddPostForm = () => {
           className="py-3 px-2 bg-transparent border border-[#D1D5DB] rounded-lg outline-none"
           onChange={handleFormChanges}
         />
+        {errors.name && (
+          <span className="block text-sm text-red-400">{errors.name}</span>
+        )}
 
         <textarea
           name="description"
@@ -100,9 +133,14 @@ const AddPostForm = () => {
           value={newPost.description}
           onChange={handleFormChanges}
         ></textarea>
+        {errors.description && (
+          <span className="block text-sm text-red-400">
+            {errors.description}
+          </span>
+        )}
 
         <button
-          onClick={handleAddPost}
+          type="submit"
           className="w-fit p-3 bg-primary rounded-3xl text-white m-auto font-semibold"
         >
           Add New post

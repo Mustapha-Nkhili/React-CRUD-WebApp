@@ -2,11 +2,11 @@ import { configureStore } from "@reduxjs/toolkit";
 import postsReducer from "./features/posts/postsSLice";
 
 let preloadedState;
-const persistedTodosString = localStorage.getItem("todos");
+const persistedPostsString = localStorage.getItem("posts");
 
-if (persistedTodosString) {
+if (persistedPostsString) {
   preloadedState = {
-    todos: JSON.parse(persistedTodosString),
+    posts: JSON.parse(persistedPostsString),
   };
 }
 

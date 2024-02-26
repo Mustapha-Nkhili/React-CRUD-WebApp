@@ -41,15 +41,17 @@ const AddPostForm = () => {
 
   console.log(newPost);
 
-  const handleAddPost = () => {};
+  const handleAddPost = () => {
+
+  };
 
   return (
-    <div className="bg-white rounded-lg flex flex-col p-5">
+    <>
       <h2 className="font-bold text-2xl text-center capitalize font-palanquin mb-5">
         Add New post
       </h2>
-      <form className="flex flex-col">
-        <label className="block w-[250px] border-2 border-dashed border-[#D1D5DB] p-5 rounded-md cursor-pointer text-center mb-5">
+      <form className="flex flex-col gap-4">
+        <label className="block w-[250px] m-auto border-2 border-dashed border-[#D1D5DB] p-5 rounded-md cursor-pointer text-center mb-5">
           <div
             className="w-[70px] aspect-square max-w-full border border-[#486898] bg-[#F0F5FB] overflow-hidden rounded-full p-[15px] m-auto mb-5"
             style={{ padding: newPost.imageUrl && "0px" }}
@@ -62,7 +64,9 @@ const AddPostForm = () => {
             />
           </div>
           <p className="font-semibold mb-1">Click to upload image</p>
-          <span className="text-sm text-[#95928f]">JPG, PNG, SVG (2MB max)</span>
+          <span className="text-sm text-[#95928f]">
+            JPG, PNG, SVG (2MB max)
+          </span>
           {imgTypeError && (
             <span className="img-type-error">
               Sorry, we couldn't process your file. It appears that the file you
@@ -84,21 +88,27 @@ const AddPostForm = () => {
           name="name"
           id="postName"
           placeholder="Enter post name"
+          className="py-3 px-2 bg-transparent border border-[#D1D5DB] rounded-lg outline-none"
           onChange={handleFormChanges}
         />
 
         <textarea
           name="description"
           id="postDescription"
-          cols="10"
-          rows="10"
           placeholder="Enter post description"
+          className="py-3 px-2 bg-transparent border border-[#D1D5DB] rounded-lg outline-none"
+          value={newPost.description}
           onChange={handleFormChanges}
         ></textarea>
 
-        <button onClick={handleAddPost}>Add New post</button>
+        <button
+          onClick={handleAddPost}
+          className="w-fit p-3 bg-primary rounded-3xl text-white m-auto font-semibold"
+        >
+          Add New post
+        </button>
       </form>
-    </div>
+    </>
   );
 };
 

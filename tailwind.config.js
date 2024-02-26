@@ -10,6 +10,7 @@ export default {
       colors: {
         primary: "#38bdf8",
         "body-bg": "#0F172A",
+        gray: "#D1D5DB",
       },
     },
   },

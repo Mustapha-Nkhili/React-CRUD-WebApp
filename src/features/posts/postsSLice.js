@@ -10,9 +10,17 @@ const postsSlice = createSlice({
       state.unshift(action.payload);
       localStorage.setItem("posts", JSON.stringify(state));
     },
+    deletePost(state, action) {
+      state.map((post, index) => {
+        if (post.id === action.payload) {
+          state.splice(index, 1);
+          localStorage.setItem("posts", JSON.stringify(state));
+        }
+      });
+    },
   },
 });
 
-export const { addPost } = postsSlice.actions;
+export const { addPost, deletePost } = postsSlice.actions;
 
 export default postsSlice.reducer;

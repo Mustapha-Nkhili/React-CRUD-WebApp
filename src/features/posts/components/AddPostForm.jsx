@@ -2,8 +2,9 @@ import { useRef, useState } from "react";
 import vanImgPlaceholder from "../../../assets/van-img-placeholder.png";
 import { addPost } from "../postsSLice";
 import { useDispatch } from "react-redux";
+import { nanoid } from "@reduxjs/toolkit";
 
-const AddPostForm = () => {
+const AddPostForm = ({ setIsPostAdding }) => {
   const dispatch = useDispatch();
   const formRef = useRef(null);
   const [newPost, setNewPost] = useState({
@@ -37,7 +38,7 @@ const AddPostForm = () => {
     const type = e.target.type;
 
     if (type !== "file") {
-      setNewPost((prev) => ({ ...prev, [name]: value.trim() }));
+      setNewPost((prev) => ({ ...prev, [name]: value }));
     } else {
       onPostImgSelected(e);
     }
@@ -63,7 +64,10 @@ const AddPostForm = () => {
     setErrors(errors);
 
     if (Object.keys(errors).length === 0) {
-      dispatch(addPost(newPost));
+      dispatch(addPost({ ...post, id: nanoid() }));
+      formRef.current.reset();
+      formRef.current.querySelector("textarea#postDescription").value = "";
+      setIsPostAdding(false);
     }
   };
 
@@ -78,7 +82,7 @@ const AddPostForm = () => {
         ref={formRef}
         method="post"
       >
-        <label className="block w-[250px] m-auto border-2 border-dashed border-[#D1D5DB] p-5 rounded-md cursor-pointer text-center">
+        <label className="block w-[250px] m-auto border-2 border-dashed border-gray p-5 rounded-md cursor-pointer text-center">
           <div
             className="w-[70px] aspect-square max-w-full border border-[#486898] bg-[#F0F5FB] overflow-hidden rounded-full p-[15px] m-auto mb-5"
             style={{ padding: newPost.imageUrl && "0px" }}
@@ -118,7 +122,8 @@ const AddPostForm = () => {
           name="name"
           id="postName"
           placeholder="Enter post name"
-          className="py-3 px-2 bg-transparent border border-[#D1D5DB] rounded-lg outline-none"
+          className="py-3 px-2 bg-transparent border border-gray rounded-lg outline-none"
+          value={newPost.name}
           onChange={handleFormChanges}
         />
         {errors.name && (
@@ -129,7 +134,7 @@ const AddPostForm = () => {
           name="description"
           id="postDescription"
           placeholder="Enter post description"
-          className="py-3 px-2 bg-transparent border border-[#D1D5DB] rounded-lg outline-none"
+          className="py-3 px-2 bg-transparent border border-gray rounded-lg outline-none"
           value={newPost.description}
           onChange={handleFormChanges}
         ></textarea>
@@ -139,12 +144,22 @@ const AddPostForm = () => {
           </span>
         )}
 
-        <button
-          type="submit"
-          className="w-fit p-3 bg-primary rounded-3xl text-white m-auto font-semibold"
-        >
-          Add New post
-        </button>
+        <div className="flex gap-3 justify-center items-center">
+          <button
+            type="submit"
+            className="w-fit p-3 bg-primary rounded-3xl text-white font-semibold transition-all duration-300 active:scale-75"
+          >
+            Add New post
+          </button>
+
+          <button
+            type="button"
+            className="w-fit py-3 px-5 bg-transparent border border-gray rounded-3xl text-black font-semibold transition hover:bg-red-500 hover:text-white"
+            onClick={() => setIsPostAdding(false)}
+          >
+            cancel
+          </button>
+        </div>
       </form>
     </>
   );

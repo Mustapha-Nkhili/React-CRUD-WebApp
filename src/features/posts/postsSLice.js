@@ -10,6 +10,18 @@ const postsSlice = createSlice({
       state.unshift(action.payload);
       localStorage.setItem("posts", JSON.stringify(state));
     },
+    editPost(state, action) {
+      const editedPost = state.map((post) => {
+        if (action.payload.id === post.id) {
+          return action.payload;
+        } else {
+          return post;
+        }
+      });
+
+      localStorage.setItem("posts", JSON.stringify(editedPost));
+      return editedPost;
+    },
     deletePost(state, action) {
       state.map((post, index) => {
         if (post.id === action.payload) {
@@ -21,6 +33,6 @@ const postsSlice = createSlice({
   },
 });
 
-export const { addPost, deletePost } = postsSlice.actions;
+export const { addPost, editPost, deletePost } = postsSlice.actions;
 
 export default postsSlice.reducer;

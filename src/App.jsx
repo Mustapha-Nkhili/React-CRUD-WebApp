@@ -29,7 +29,7 @@ const App = () => {
       <main>
         <ul className="flex flex-col gap-5 mt-10">
           {posts.map((post, index) => {
-            return <Post key={post.imageUrl + index} post={post} />;
+            return <Post key={post?.imageUrl + index} post={post} />;
           })}
         </ul>
       </main>

@@ -64,7 +64,7 @@ const AddPostForm = ({ setIsPostAdding }) => {
     setErrors(errors);
 
     if (Object.keys(errors).length === 0) {
-      dispatch(addPost({ ...post, id: nanoid() }));
+      dispatch(addPost({ ...newPost, id: nanoid() }));
       formRef.current.reset();
       formRef.current.querySelector("textarea#postDescription").value = "";
       setIsPostAdding(false);

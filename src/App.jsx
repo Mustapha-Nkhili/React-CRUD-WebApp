@@ -29,7 +29,7 @@ const App = () => {
         + add post
       </button>
       <div
-        className={`absolute -translate-y-2/4 -translate-x-2/4 z-50 bg-white rounded-lg flex flex-col p-5 top-2/4 w-[400px] max-w-full transition-all duration-300 ${
+        className={`fixed -translate-y-2/4 -translate-x-2/4 z-50 bg-white rounded-lg flex flex-col p-5 top-2/4 w-[400px] max-w-full transition-all duration-300 ${
           isPostAdding ? "left-2/4" : "-left-[100%]"
         }`}
       >
@@ -46,7 +46,6 @@ const App = () => {
           currentPage={currentPage}
           paginate={paginate}
         />
-        {/* <button onClick={() => setCurrentPage((prev) => prev + 1)}>+</button> */}
       </main>
     </div>
   );

@@ -2,16 +2,19 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { editPost } from "../postsSLice";
 import PostSettings from "./PostSettings";
+import ConfirmationDialog from "./ConfirmationDialog";
 
 const Post = ({ post }) => {
   const dispatch = useDispatch();
   const [isPostSettingDisplayed, setIsPostSettingDisplayed] = useState(false);
   const [editedPost, setEditedPost] = useState(post);
   const [isPostEditting, setIsPostEditting] = useState(false);
+  const [isPostDeletting, setIsPostDeletting] = useState(false);
 
   const displayPostSettings = () => {
     setIsPostSettingDisplayed((prev) => !prev);
   };
+
   const handleEditedPostChanges = (e) => {
     const { name, value, type } = e.target;
 
@@ -35,8 +38,15 @@ const Post = ({ post }) => {
     setIsPostEditting(false);
   };
 
+  const showConfimationDialog = () => {
+    setIsPostDeletting((prev) => !prev);
+  };
+
   return (
     <li className="bg-white p-5 rounded-lg w-[300px] max-w-full">
+      {isPostDeletting && (
+        <ConfirmationDialog setIsPostDeletting={setIsPostDeletting} id={post.id} />
+      )}
       <header className="flex justify-between items-center">
         {!isPostEditting ? (
           <span className="font-semibold text-lg">{post.name}</span>
@@ -62,7 +72,7 @@ const Post = ({ post }) => {
                 : "opacity-0 -right-[100px]"
             } transition-all duration-300`}
           >
-            <PostSettings id={post.id} setIsPostEditting={setIsPostEditting} />
+            <PostSettings id={post.id} setIsPostEditting={setIsPostEditting} showConfimationDialog={showConfimationDialog} />
           </div>
         </div>
       </header>
@@ -78,12 +88,13 @@ const Post = ({ post }) => {
           onChange={handleEditedPostChanges}
         />
       )}
-      <div className="flex items-center justify-center w-full">
+      <div className="flex items-center justify-center flex-col w-full">
         <img
           src={!isPostEditting ? post.imageUrl : editedPost.imageUrl}
           className="w-full object-cover"
           alt={`this is the post image of ${post.name}`}
         />
+
         {isPostEditting && (
           <input
             type="file"

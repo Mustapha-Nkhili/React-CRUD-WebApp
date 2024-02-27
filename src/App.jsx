@@ -2,14 +2,23 @@ import { useState } from "react";
 import AddPostForm from "./features/posts/components/AddPostForm";
 import Post from "./features/posts/components/Post";
 import { useSelector } from "react-redux";
+import Pagination from "./features/posts/components/Pagination";
 
 const App = () => {
   const posts = useSelector((state) => state.posts);
   const [isPostAdding, setIsPostAdding] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const postsPerPage = 10;
 
   const handleAddPostBtnClicked = () => {
     setIsPostAdding((prev) => !prev);
   };
+
+  const lastPostIndex = currentPage * postsPerPage;
+  const firstPostIndex = lastPostIndex - postsPerPage;
+  const currentPosts = posts.slice(firstPostIndex, lastPostIndex);
+
+  const paginate = (number) => setCurrentPage(number);
 
   return (
     <div className="w-[700px] max-w-[100%] m-auto flex items-center justify-center flex-col min-h-screen p-5">
@@ -28,10 +37,16 @@ const App = () => {
       </div>
       <main>
         <ul className="flex flex-col gap-5 mt-10">
-          {posts.map((post, index) => {
+          {currentPosts.map((post, index) => {
             return <Post key={post?.imageUrl + index} post={post} />;
           })}
         </ul>
+        <Pagination
+          paginationLength={posts.length / postsPerPage}
+          currentPage={currentPage}
+          paginate={paginate}
+        />
+        {/* <button onClick={() => setCurrentPage((prev) => prev + 1)}>+</button> */}
       </main>
     </div>
   );

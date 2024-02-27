@@ -45,6 +45,7 @@ const Post = ({ post }) => {
             type="text"
             className="bg-transparent border-b border-primary outline-none"
             name="name"
+            placeholder="Enter the new post name"
             onChange={handleEditedPostChanges}
             value={editedPost.name}
           />
@@ -72,6 +73,7 @@ const Post = ({ post }) => {
           type="text"
           className="bg-transparent border-b border-primary outline-none"
           name="description"
+          placeholder="Enter the new post description"
           value={editedPost.description}
           onChange={handleEditedPostChanges}
         />
@@ -90,7 +92,7 @@ const Post = ({ post }) => {
       )}
       {isPostEditting && (
         <button
-          className="bg-primary rounded-md px-2 py-1 text-white transition-all m-auto block active:scale-75"
+          className="capitalize bg-primary rounded-md px-2 py-1 text-white transition-all m-auto block active:scale-75"
           onClick={saveChanges}
         >
           save changes

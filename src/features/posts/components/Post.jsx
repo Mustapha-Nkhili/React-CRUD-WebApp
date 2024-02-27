@@ -32,11 +32,11 @@ const Post = ({ post }) => {
 
   const saveChanges = () => {
     dispatch(editPost(editedPost));
-    setIsPostEditting(false)
+    setIsPostEditting(false);
   };
 
   return (
-    <li className="bg-white p-5 rounded-lg">
+    <li className="bg-white p-5 rounded-lg w-[300px] max-w-full">
       <header className="flex justify-between items-center">
         {!isPostEditting ? (
           <span className="font-semibold text-lg">{post.name}</span>
@@ -67,29 +67,31 @@ const Post = ({ post }) => {
         </div>
       </header>
       {!isPostEditting ? (
-        <p className="mt-5 mb-2">{post.description}</p>
+        <p className="mt-5 mb-2 text-justify">{post.description}</p>
       ) : (
-        <input
-          type="text"
-          className="bg-transparent border-b border-primary outline-none"
+        <textarea
+          className="bg-transparent border-b border-primary outline-none mb-2 w-full"
           name="description"
           placeholder="Enter the new post description"
+          rows={4}
           value={editedPost.description}
           onChange={handleEditedPostChanges}
         />
       )}
-      <img
-        src={!isPostEditting ? post.imageUrl : editedPost.imageUrl}
-        className="max-w-[300px] object-cover"
-        alt={`this is the post image of ${post.name}`}
-      />
-      {isPostEditting && (
-        <input
-          type="file"
-          className="mt-5"
-          onChange={handleEditedPostChanges}
+      <div className="flex items-center justify-center w-full">
+        <img
+          src={!isPostEditting ? post.imageUrl : editedPost.imageUrl}
+          className="w-full object-cover"
+          alt={`this is the post image of ${post.name}`}
         />
-      )}
+        {isPostEditting && (
+          <input
+            type="file"
+            className="mt-5"
+            onChange={handleEditedPostChanges}
+          />
+        )}
+      </div>
       {isPostEditting && (
         <button
           className="capitalize bg-primary rounded-md px-2 py-1 text-white transition-all m-auto block active:scale-75"

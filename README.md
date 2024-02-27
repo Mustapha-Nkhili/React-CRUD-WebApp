@@ -2,6 +2,9 @@
 
 This CRUD (Create, Read, Update, Delete) Post Web App is a project developed for the Learn2Earn internship assignment. It focuses on implementing essential CRUD functionalities for posts and incorporating pagination functionality. Additionally, user-generated posts are stored locally in the browser's localStorage for data persistence.
 
+# Demo 
+[React CRUD post](https://react-crud-post.netlify.app/)
+
 ## Features
 
 - **Create:** Users can create new posts with a name, description, and image.
